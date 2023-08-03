@@ -19,7 +19,7 @@ public:
 	void PollEvents();
 
 	size_t RegisterCallBack(SDL_EventType eventType, std::function<void(SDL_Event&)> callback);
-	void UnregisterCallback(SDL_EventType eventType, size_t index);
+	void UnregisterCallback(size_t callbackId);
 
 
 	SDL_Window* window;
@@ -29,6 +29,8 @@ public:
 private:
 
 	std::map<SDL_EventType, std::vector<std::function<void(SDL_Event&)>>> m_eventCallbacks;
+	std::map<size_t, std::pair<SDL_EventType, size_t>> m_callbackIds;
+	size_t m_nextCallbackId = 0;
 	FILE* m_stdout;
 
 };

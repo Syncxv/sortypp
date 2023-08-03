@@ -79,14 +79,24 @@ void SDL_Handler::PollEvents() {
 }
 size_t SDL_Handler::RegisterCallBack(SDL_EventType eventType, std::function<void(SDL_Event&)> callback) {
     m_eventCallbacks[eventType].push_back(callback);
-    return m_eventCallbacks[eventType].size() - 1;
+    size_t callbackId = m_nextCallbackId++;
+    m_callbackIds[callbackId] = { eventType, m_eventCallbacks[eventType].size() - 1 };
+    return callbackId;
 }
 
-void SDL_Handler::UnregisterCallback(SDL_EventType eventType, size_t index) {
-    if (m_eventCallbacks.count(eventType) > 0) {
+void SDL_Handler::UnregisterCallback(size_t callbackId) {
+    if (m_callbackIds.count(callbackId) > 0) {
+        SDL_EventType eventType = m_callbackIds[callbackId].first;
+        size_t index = m_callbackIds[callbackId].second;
         if (index < m_eventCallbacks[eventType].size()) {
             m_eventCallbacks[eventType].erase(m_eventCallbacks[eventType].begin() + index);
+            // Adjust the indices of all remaining callbacks for this event type
+            for (auto& pair : m_callbackIds) {
+                if (pair.second.first == eventType && pair.second.second > index) {
+                    --pair.second.second;
+                }
+            }
         }
+        m_callbackIds.erase(callbackId);
     }
 }
-

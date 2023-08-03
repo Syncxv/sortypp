@@ -25,6 +25,7 @@ public:
 	int currentSortingIndex;
 private:
 	std::vector<int> m_array;
+	std::vector<size_t> m_callbackIds;
 	SDL_Handler* m_handler;
 	std::chrono::high_resolution_clock::time_point m_lastSortStep;
 

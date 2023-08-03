@@ -8,7 +8,7 @@ Visualizer::Visualizer(SDL_Handler* handler){
 	InitalizeArray();
 	Shuffle();
 
-	m_handler->RegisterCallBack(SDL_KEYDOWN, [this](SDL_Event& event) {
+	m_callbackIds.push_back(m_handler->RegisterCallBack(SDL_KEYDOWN, [this](SDL_Event& event) {
 		if (event.key.keysym.sym == SDLK_RETURN) {
 			std::cout << "BUBBLE SORTING TIME" << std::endl;
 			isSorting = true;
@@ -17,15 +17,15 @@ Visualizer::Visualizer(SDL_Handler* handler){
 		if (event.key.keysym.sym == SDLK_s) {
 			Shuffle();
 		}
-	});
+	}));
 
-	m_handler->RegisterCallBack(SDL_WINDOWEVENT, [this](SDL_Event& event) {
+	m_callbackIds.push_back(m_handler->RegisterCallBack(SDL_WINDOWEVENT, [this](SDL_Event& event) {
 		if (event.window.event == SDL_WINDOWEVENT_RESIZED && !isSorting) {
 			std::cout << "AYO" << std::endl;
 			InitalizeArray();
 			Shuffle();
 		}
-	});
+	}));
 
 }
 
@@ -44,6 +44,9 @@ void Visualizer::InitalizeArray() {
 }
 
 Visualizer::~Visualizer() {
+	for (size_t& id : m_callbackIds) {
+		m_handler->UnregisterCallback(id);
+	}
 }
 
 void Visualizer::Update() {
@@ -101,9 +104,9 @@ void Visualizer::BubbleSort() {
 	static int j = 0;
 
 	if (i < m_array.size()) {
-		currentSortingIndex = i;
 		if (j < m_array.size() - i - 1) {
 			if (m_array[j] > m_array[j + 1]) {
+				currentSortingIndex = j;
 				std::swap(m_array[j], m_array[j + 1]);
 			}
 			++j;
@@ -114,7 +117,7 @@ void Visualizer::BubbleSort() {
 		}
 	}
 	else {
-	 i = 0;
+		i = 0;
         j = 0;
         isSorting = false;
 	}
