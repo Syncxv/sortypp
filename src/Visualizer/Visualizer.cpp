@@ -14,7 +14,7 @@ Visualizer::Visualizer(SDL_Handler* handler){
 			isSorting = true;
 		}
 
-		if (event.key.keysym.sym == SDLK_s) {
+		if (event.key.keysym.sym == SDLK_s && !isSorting) {
 			Shuffle();
 		}
 	}));
@@ -33,8 +33,6 @@ void Visualizer::InitalizeArray() {
 	m_array.clear();
 
 	int width = m_handler->GetWindowWidth();
-	int height = m_handler->GetWindowHeight();
-
 	int arrayLength = floor(width / lineWidth);
 
 	for (int i = 0; i < arrayLength; ++i) {
@@ -118,7 +116,7 @@ void Visualizer::BubbleSort() {
 	}
 	else {
 		i = 0;
-        j = 0;
-        isSorting = false;
+		j = 0;
+		isSorting = false;
 	}
 }
