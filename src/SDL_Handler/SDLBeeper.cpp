@@ -15,12 +15,12 @@ SDLBeeper::~SDLBeeper() {
 
 void SDLBeeper::Initalize() {
 	spec = {
-	.freq = FREQUENCY,
-	.format = AUDIO_S16SYS, // Signed 16 bit integer format
-	.channels = 1,
-	.samples = 4096, // The size of each "chunk"
-	.callback = audioCallback, // user-defined function that provides the audio data
-	.userdata = this // an argument to the callback function (we dont need any)
+		.freq = FREQUENCY,
+		.format = AUDIO_S16SYS, // Signed 16 bit integer format
+		.channels = 1,
+		.samples = 4096, // The size of each "chunk"
+		.callback = audioCallback, // user-defined function that provides the audio data
+		.userdata = this // an argument to the callback function (we dont need any)
 	};
 
 	audioDevice = SDL_OpenAudioDevice(NULL, 0, &spec, NULL, 0);
@@ -66,6 +66,10 @@ void SDLBeeper::beep(double hz) {
 	m_bufferPos = 0; // Reset buffer position for the callback.
 	SDL_PauseAudioDevice(audioDevice, 0); // Start playing the sound.
 	SDL_Delay(BUFFER_DURATION_MS);
+}
+
+void SDLBeeper::stop() {
+	SDL_PauseAudioDevice(audioDevice, 1);
 }
 
 void SDLBeeper::fillBufferWithTone(double hz) {

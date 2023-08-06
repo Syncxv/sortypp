@@ -38,7 +38,6 @@ bool SDL_Handler::Initalize() {
 
 
 void SDL_Handler::Destroy() {
-
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();

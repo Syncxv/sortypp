@@ -40,10 +40,6 @@ void ImguiMenu::Destroy() {
 	ImGui_ImplSDLRenderer2_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
-
-	SDL_DestroyRenderer(m_handler->renderer);
-	SDL_DestroyWindow(m_handler->window);
-	SDL_Quit();
 }
 
 void ImguiMenu::Update() {
@@ -59,15 +55,18 @@ void ImguiMenu::Update() {
 
 	if (ImGui::Begin("SORTING GANG", &isOpen)) {
 
+		ImGui::Text("isSorting: %s", m_visualizer->isSorting ? "True" : "False");
+
         ImGui::BeginChild("Options", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
 		if (ImGui::SliderInt("Line Width", &m_visualizer->lineWidth, 0, 100)) {
 			
 			m_visualizer->InitalizeArray();
 			m_visualizer->Shuffle();
+			m_visualizer->StopSort();
 		}
 		ImGui::SameLine(); HelpMarker("CTRL+click to input value.");
 
-		ImGui::SliderInt("Speed", &m_visualizer->speed, 1, 1090);
+		ImGui::SliderInt("Delay", &m_visualizer->delay, 1, 1090);
 		ImGui::SameLine(); HelpMarker("CTRL+click to input value.\nHigher the value the slower it is");
 
 		ImGui::Combo("Algorithm", &m_visualizer->selected, m_visualizer->algos, IM_ARRAYSIZE(m_visualizer->algos));
@@ -75,21 +74,28 @@ void ImguiMenu::Update() {
 		if (ImGui::Button("Sound")) {
 			std::thread t([this]() {
 				SDLBeeper beeper;
-				beeper.beep((double)m_visualizer->speed);
+				beeper.beep((double)m_visualizer->delay);
 			});
 			t.detach();
 		}
 
 		ImGui::EndChild();
 
+		
+		if (ImGui::Button("Start"))
+			m_visualizer->StartSort();
+		ImGui::SameLine();
+
+		if (ImGui::Button("Stop"))
+			m_visualizer->StopSort();
+		ImGui::SameLine();
+
+		if (ImGui::Button("Resume"))
+			m_visualizer->Resume();
+		ImGui::SameLine();
+
 		if (ImGui::Button("Shuffle"))
 			m_visualizer->Shuffle();
-		ImGui::SameLine();
-		if (ImGui::Button("Start"))
-			m_visualizer->isSorting = true;
-		ImGui::SameLine();
-		if (ImGui::Button("Stop"))
-			m_visualizer->isSorting = false;
 		ImGui::SameLine();
 	}
 
