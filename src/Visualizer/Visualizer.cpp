@@ -18,16 +18,6 @@ Visualizer::Visualizer(SDL_Handler* handler){
 		if (event.key.keysym.sym == SDLK_s && !isSorting) {
 			Shuffle();
 		}
-
-		if (event.key.keysym.sym == SDLK_x) {
-			const int sampleCount = 44100 * 2;  // duration is in seconds
-			float* buffer = new float[sampleCount];
-
-			generateSineWave(4, buffer, 44100, sampleCount);
-
-			SDL_QueueAudio(m_handler->audioDevice, buffer, sampleCount * sizeof(float));
-			SDL_PauseAudioDevice(m_handler->audioDevice, 0);  // start playback
-		}
 	}));
 
 	m_callbackIds.push_back(m_handler->RegisterCallBack(SDL_WINDOWEVENT, [this](SDL_Event& event) {
@@ -66,7 +56,7 @@ void Visualizer::Update() {
 		auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(diff).count();
 
 		if (elapsed >= speed) {
-			const char* algo = items[selected];
+			const char* algo = algos[selected];
 			if (algo == "Bubble Sort") {
 				BubbleSort();
 			}
@@ -156,14 +146,5 @@ void Visualizer::InsertionSort() {
 	else {
 		i = 1;
 		isSorting = false;
-	}
-}
-
-
-
-void generateSineWave(float frequency, float* buffer, int sampleRate, int sampleCount) {
-	const float twoPi = 2.0f * static_cast<float>(M_PI);
-	for (int i = 0; i < sampleCount; ++i) {
-		buffer[i] = sinf(frequency * twoPi * i / sampleRate);
 	}
 }

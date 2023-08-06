@@ -26,7 +26,7 @@ public:
 	bool isSorting = false;
 	int currentSortingIndex;
 
-	const char* items[2] = { "Bubble Sort", "Insertion Sort"};
+	const char* algos[2] = {"Bubble Sort", "Insertion Sort"};
 	int selected = 0;
 private:
 	std::vector<int> m_array;

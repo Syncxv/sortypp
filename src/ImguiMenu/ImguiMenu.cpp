@@ -1,5 +1,7 @@
 #include "ImguiMenu.h"
 
+#include "SDL_Handler/SDLBeeper.h"
+#include <thread>
 
 static void HelpMarker(const char* desc);
 
@@ -68,7 +70,16 @@ void ImguiMenu::Update() {
 		ImGui::SliderInt("Speed", &m_visualizer->speed, 1, 1090);
 		ImGui::SameLine(); HelpMarker("CTRL+click to input value.\nHigher the value the slower it is");
 
-		ImGui::Combo("Algorithm", &m_visualizer->selected, m_visualizer->items, IM_ARRAYSIZE(m_visualizer->items));
+		ImGui::Combo("Algorithm", &m_visualizer->selected, m_visualizer->algos, IM_ARRAYSIZE(m_visualizer->algos));
+
+		if (ImGui::Button("Sound")) {
+			std::thread t([this]() {
+				SDLBeeper beeper;
+				beeper.beep((double)m_visualizer->speed);
+			});
+			t.detach();
+		}
+
 		ImGui::EndChild();
 
 		if (ImGui::Button("Shuffle"))

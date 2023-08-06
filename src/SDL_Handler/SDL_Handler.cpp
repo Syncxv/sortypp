@@ -32,20 +32,6 @@ bool SDL_Handler::Initalize() {
 
     renderer = SDL_CreateRenderer(window, -1, 0);
 
-
-    SDL_AudioSpec desiredSpec;
-    desiredSpec.freq = 44100;
-    desiredSpec.format = AUDIO_F32SYS;
-    desiredSpec.channels = 1;
-    desiredSpec.samples = 4096;
-
-    SDL_AudioSpec obtainedSpec;
-    audioDevice = SDL_OpenAudioDevice(NULL, 0, &desiredSpec, &obtainedSpec, 0);
-    if (audioDevice == 0) {
-        SDL_Log("Failed to open audio device: %s", SDL_GetError());
-        return false;
-    }
-
     return true;
 }
 

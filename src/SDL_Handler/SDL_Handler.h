@@ -21,10 +21,8 @@ public:
 	size_t RegisterCallBack(SDL_EventType eventType, std::function<void(SDL_Event&)> callback);
 	void UnregisterCallback(size_t callbackId);
 
-
 	SDL_Window* window;
 	SDL_Renderer* renderer;
-	SDL_AudioDeviceID audioDevice;
 
 	bool isRunning = true;
 
