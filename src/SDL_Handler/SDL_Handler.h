@@ -24,8 +24,11 @@ public:
 
 	SDL_Window* window;
 	SDL_Renderer* renderer;
+	SDL_AudioDeviceID audioDevice;
 
 	bool isRunning = true;
+
+	inline static const SDL_EventType CUSTOM_ALL = (SDL_EventType)0x69420;
 private:
 
 	std::map<SDL_EventType, std::vector<std::function<void(SDL_Event&)>>> m_eventCallbacks;

@@ -2,9 +2,12 @@
 #include <SDL.h>
 #include "SDL_Handler/SDL_Handler.h"
 #include "Visualizer/Visualizer.h"
+
+
 int main(int argc, char* argv[]) {
 
 	SDL_Handler handler;
+	ImguiMenu imguiMenu{ &handler };
 	Visualizer visualizer{ &handler };
 
 	while (handler.isRunning) {
@@ -12,7 +15,10 @@ int main(int argc, char* argv[]) {
 		SDL_RenderClear(handler.renderer);
 
 		visualizer.Update();
+		imguiMenu.Update();
 		handler.PollEvents();
+
+		SDL_RenderPresent(handler.renderer);
 	}
 	
 	return 0;

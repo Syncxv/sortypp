@@ -7,7 +7,8 @@
 #include <chrono>
 
 
-#include "../SDL_Handler/SDL_Handler.h"
+#include "SDL_Handler/SDL_Handler.h"
+#include "SDL_Handler/ImguiMenu.h"
 
 class Visualizer {
 public:
@@ -19,8 +20,9 @@ public:
 	void InitalizeArray();
 	void Shuffle();
 	void BubbleSort();
+	void InsertionSort();
 
-	int lineWidth = 20;
+	int lineWidth = 5;
 	bool isSorting = false;
 	int currentSortingIndex;
 private:

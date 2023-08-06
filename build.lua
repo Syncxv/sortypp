@@ -13,9 +13,13 @@ project "Sorting Algo Visualizer"
    targetdir "bin/%{cfg.buildcfg}"
    staticruntime "off"
 
-   files { "src/**.h", "src/**.cpp" }
+   files { 
+      "src/**.h", 
+      "src/**.cpp",
+      "deps/imgui/*.cpp",
+   }
 
-   includedirs { "deps/SDL2/include" }
+   includedirs { "src", "deps/SDL2/include", "deps/imgui" }
    libdirs { "deps/SDL2/lib/x64" }
 
    links { "SDL2main", "SDL2" }

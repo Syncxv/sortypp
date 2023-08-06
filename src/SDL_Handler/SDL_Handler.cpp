@@ -27,18 +27,24 @@ bool SDL_Handler::Initalize() {
     if (!window)
     {
         std::cout << "Failed to create window\n";
-        return -1;
+        return false;
     }
 
     renderer = SDL_CreateRenderer(window, -1, 0);
 
 
-    // get window dimensions
-    int windowWidth = GetWindowWidth();
-    int windowHeight = GetWindowHeight();
+    SDL_AudioSpec desiredSpec;
+    desiredSpec.freq = 44100;
+    desiredSpec.format = AUDIO_F32SYS;
+    desiredSpec.channels = 1;
+    desiredSpec.samples = 4096;
 
-    // print dimensions
-    std::cout << "Window dimensions: " << windowWidth << "x" << windowHeight << std::endl;
+    SDL_AudioSpec obtainedSpec;
+    audioDevice = SDL_OpenAudioDevice(NULL, 0, &desiredSpec, &obtainedSpec, 0);
+    if (audioDevice == 0) {
+        SDL_Log("Failed to open audio device: %s", SDL_GetError());
+        return false;
+    }
 
     return true;
 }
@@ -68,6 +74,12 @@ void SDL_Handler::PollEvents() {
         case SDL_QUIT:
             isRunning = false;
             break;
+        }
+
+        if (m_eventCallbacks.count(CUSTOM_ALL) > 0) {
+            for (auto& callback : m_eventCallbacks[CUSTOM_ALL]) {
+                callback(event);
+            }
         }
 
         if (m_eventCallbacks.count(static_cast<SDL_EventType>(event.type)) > 0) {
