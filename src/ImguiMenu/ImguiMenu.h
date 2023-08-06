@@ -4,12 +4,11 @@
 #include <imgui.h>
 
 #include "SDL_Handler/SDL_Handler.h"
+#include "Visualizer/Visualizer.h"
 
-class ImguiMenu
-{
-
+class ImguiMenu {
 public:
-	ImguiMenu(SDL_Handler* handler);
+	ImguiMenu(SDL_Handler* handler, Visualizer* visualizer);
 	~ImguiMenu();
 
 	void Initalize();
@@ -18,9 +17,10 @@ public:
 	void Update();
 
 	ImGuiIO io;
-	ImVec4 clear_color;
+
+	bool isOpen = true;
 
 private:
 	SDL_Handler* m_handler;
+	Visualizer* m_visualizer;
 };
-

@@ -65,8 +65,14 @@ void Visualizer::Update() {
 		auto diff = std::chrono::duration<double>(now - m_lastSortStep);
 		auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(diff).count();
 
-		if (elapsed >= 4) {
-			InsertionSort();
+		if (elapsed >= speed) {
+			const char* algo = items[selected];
+			if (algo == "Bubble Sort") {
+				BubbleSort();
+			}
+			else if (algo == "Insertion Sort") {
+				InsertionSort();
+			}
 			m_lastSortStep = now;
 		}
 	}

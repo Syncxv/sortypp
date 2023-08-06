@@ -8,7 +8,6 @@
 
 
 #include "SDL_Handler/SDL_Handler.h"
-#include "SDL_Handler/ImguiMenu.h"
 
 class Visualizer {
 public:
@@ -23,8 +22,12 @@ public:
 	void InsertionSort();
 
 	int lineWidth = 5;
+	int speed = 2;
 	bool isSorting = false;
 	int currentSortingIndex;
+
+	const char* items[2] = { "Bubble Sort", "Insertion Sort"};
+	int selected = 0;
 private:
 	std::vector<int> m_array;
 	std::vector<size_t> m_callbackIds;
