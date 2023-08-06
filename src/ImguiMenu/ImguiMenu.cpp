@@ -58,7 +58,7 @@ void ImguiMenu::Update() {
 		ImGui::Text("isSorting: %s", m_visualizer->isSorting ? "True" : "False");
 
         ImGui::BeginChild("Options", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
-		if (ImGui::SliderInt("Line Width", &m_visualizer->lineWidth, 0, 100)) {
+		if (ImGui::SliderInt("Line Width", &m_visualizer->lineWidth, 1, 100)) {
 			
 			m_visualizer->InitalizeArray();
 			m_visualizer->Shuffle();

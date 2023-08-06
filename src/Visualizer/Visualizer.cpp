@@ -70,6 +70,7 @@ void Visualizer::Update() {
 		case OperationType::COMPARE:
 			// Highlight the two indices being compared.
 			//...
+			currentSortingIndex = op.indexB;
 			break;
 		case OperationType::SWAP:
 			// Swap and highlight the two indices.
@@ -110,8 +111,10 @@ void Visualizer::RenderLines() {
 
 		SDL_RenderFillRect(m_handler->renderer, &rect);
 
-		SDL_SetRenderDrawColor(m_handler->renderer, 0, 0, 0, 255);  // Black color
-		SDL_RenderDrawRect(m_handler->renderer, &rect);
+		if (lineWidth > 5) {
+			SDL_SetRenderDrawColor(m_handler->renderer, 0, 0, 0, 255);  // Black color
+			SDL_RenderDrawRect(m_handler->renderer, &rect);
+		}
 	}
 }
 
@@ -124,6 +127,9 @@ void Visualizer::StartSort() {
 	}
 	else if (algo == "Insertion Sort") {
 		InsertionSort();
+	}
+	else if (algo == "Quick Sort") {
+		QuickSortVisualization();
 	}
 	isSorting = true;
 }
@@ -189,4 +195,41 @@ void Visualizer::InsertionSort() {
 
 		coolArr[j + 1] = current;
 	}
+}
+
+
+void Visualizer::QuickSort(std::vector<int>& arr, int low, int high) {
+	if (low < high) {
+		int pi = Partition(arr, low, high);
+		QuickSort(arr, low, pi - 1);
+		QuickSort(arr, pi + 1, high);
+	}
+}
+
+int Visualizer::Partition(std::vector<int>& arr, int low, int high) {
+	int pivot = arr[high];
+	int i = low - 1;
+
+	for (int j = low; j <= high - 1; j++) {
+		// Record the comparison operation
+		m_operations.push_back({ OperationType::COMPARE, j, high });
+
+		if (arr[j] < pivot) {
+			i++;
+			// Record the swap operation
+			m_operations.push_back({ OperationType::SWAP, i, j });
+			std::swap(arr[i], arr[j]);
+		}
+	}
+
+	// Record the swap operation for pivot positioning
+	m_operations.push_back({ OperationType::SWAP, i + 1, high });
+	std::swap(arr[i + 1], arr[high]);
+
+	return i + 1;
+}
+
+void Visualizer::QuickSortVisualization() {
+	std::vector<int> coolArr = m_array;
+	QuickSort(coolArr, 0, coolArr.size() - 1);
 }

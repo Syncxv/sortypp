@@ -36,6 +36,12 @@ public:
 	void BubbleSort();
 	void InsertionSort();
 
+	void QuickSort(std::vector<int>& arr, int low, int high);
+
+	int Partition(std::vector<int>& arr, int low, int high);
+
+	void QuickSortVisualization();
+
 	void StartSort();
 	void Resume();
 	void StopSort();
@@ -49,7 +55,7 @@ public:
 	bool isSorting = false;
 	int currentSortingIndex;
 
-	const char* algos[2] = {"Bubble Sort", "Insertion Sort"};
+	const char* algos[3] = {"Bubble Sort", "Insertion Sort", "Quick Sort"};
 	int selected = 0;
 	
 private:
