@@ -1,7 +1,5 @@
 #include "Visualizer.h"
 
-void generateSineWave(float frequency, float* buffer, int sampleRate, int sampleCount);
-
 Visualizer::Visualizer(SDL_Handler* handler){
 	m_handler = handler;
 	m_lastSortStep = std::chrono::high_resolution_clock::now();	
