@@ -58,6 +58,7 @@ public:
 	const char* algos[3] = {"Bubble Sort", "Insertion Sort", "Quick Sort"};
 	int selected = 0;
 	
+	SDLBeeper beeper;
 private:
 	std::vector<int> m_array;
 	std::vector<size_t> m_callbackIds;
@@ -65,7 +66,6 @@ private:
 	int m_currentOperationIndex;
 	SDL_Handler* m_handler;
 	std::chrono::high_resolution_clock::time_point m_lastOperationTime;
-	SDLBeeper beeper;
 
 };
 

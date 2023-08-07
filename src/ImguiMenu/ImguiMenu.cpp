@@ -73,8 +73,7 @@ void ImguiMenu::Update() {
 
 		if (ImGui::Button("Sound")) {
 			std::thread t([this]() {
-				SDLBeeper beeper;
-				beeper.beep((double)m_visualizer->delay);
+				m_visualizer->beeper.beep(440.0);
 			});
 			t.detach();
 		}

@@ -50,7 +50,10 @@ void SDLBeeper::playBuffer(unsigned char* stream, int len) {
 	len = (m_bufferPos + len < BUFFER_LEN ? len : BUFFER_LEN - m_bufferPos);
 
 	// If we are at the end of the buffer, keep the silence and return
-	if (len == 0) return;
+	if (len == 0) {
+		stop();
+		return;
+	};
 
 	// Copy the samples from the current position in the buffer to the stream
 	// Notice that the length gets multiplied back by 2 because we need to specify the length IN BYTES
