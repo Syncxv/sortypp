@@ -64,8 +64,7 @@ void SDLBeeper::playBuffer(unsigned char* stream, int len) {
 }
 
 void SDLBeeper::beep(double hz) {
-	m_currentHz = hz;
-	fillBufferWithTone(m_currentHz);
+	fillBufferWithTone(hz);
 	m_bufferPos = 0; // Reset buffer position for the callback.
 	SDL_PauseAudioDevice(audioDevice, 0); // Start playing the sound.
 	SDL_Delay(BUFFER_DURATION_MS);
@@ -76,9 +75,10 @@ void SDLBeeper::stop() {
 }
 
 void SDLBeeper::fillBufferWithTone(double hz) {
+	std::cout << volume << std::endl;
 	int samples_to_generate = (BUFFER_DURATION_MS * FREQUENCY) / 1000;
 	for (int i = 0; i < samples_to_generate; i++) {
-		buffer[i] = format(tone(hz, i), 0.5);
+		buffer[i] = format(tone(hz, i), (double)volume);
 	}
 }
 

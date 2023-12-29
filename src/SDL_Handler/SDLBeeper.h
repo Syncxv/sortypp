@@ -18,11 +18,13 @@ public:
 	void beep(double hz);
 	void stop();
 
+
 	SDL_AudioSpec spec;
 	SDL_AudioDeviceID audioDevice;
 
+	float volume = 0.2;
+
 private:
-	double m_currentHz = 440.0;
 	int m_bufferPos = 0;
 	Sint16 buffer[BUFFER_LEN];
 	void fillBufferWithTone(double hz);

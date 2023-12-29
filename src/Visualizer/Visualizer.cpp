@@ -1,6 +1,9 @@
 #include "Visualizer.h"
 
 
+const double minFrequency = 20.0;
+const double maxFrequency = 1000.0;
+
 Visualizer::Visualizer(SDL_Handler* handler){
 	m_handler = handler;
 	m_lastOperationTime = std::chrono::high_resolution_clock::now();	
@@ -62,7 +65,7 @@ Visualizer::~Visualizer() {
 void Visualizer::Update() {
 	auto now = std::chrono::high_resolution_clock::now();
 	auto diff = std::chrono::duration<double>(now - m_lastOperationTime);
-	auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(diff).count();
+	auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(diff).count();
 
 	if (isSorting && elapsed >= delay && m_currentOperationIndex < m_operations.size()) {
 		Operation& op = m_operations[m_currentOperationIndex];
@@ -120,6 +123,8 @@ void Visualizer::RenderLines() {
 
 
 void Visualizer::StartSort() {
+	if (isSorting) return;
+
 	ResetOperations();
 	const char* algo = algos[selected];
 	if (algo == "Bubble Sort") {
@@ -148,11 +153,14 @@ void Visualizer::ResetOperations() {
 	m_currentOperationIndex = 0;
 }
 
-
 void Visualizer::playSwap(int index) {
-	if (!m_handler->isRunning || isSorting)
-		beeper.stop();
-	beeper.beep((double)(index * 20));
+	if (!m_handler->isRunning || !isSorting)
+		return beeper.stop();
+
+	double normalizedIndex = static_cast<double>(index) / m_array.size();
+	double frequency = minFrequency + (normalizedIndex * (maxFrequency - minFrequency));
+
+	beeper.beep(frequency);
 }
 
 void Visualizer::BubbleSort() {

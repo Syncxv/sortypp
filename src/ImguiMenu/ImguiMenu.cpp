@@ -43,12 +43,11 @@ void ImguiMenu::Destroy() {
 }
 
 void ImguiMenu::Update() {
-	// Start the Dear ImGui frame
 	ImGui_ImplSDLRenderer2_NewFrame();
 	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
 
-	ImGui::ShowDemoWindow();
+	// ImGui::ShowDemoWindow();
 
 	ImGui::SetNextWindowPos(ImVec2(20, 20), ImGuiCond_FirstUseEver);
 	ImGui::SetNextWindowSize(ImVec2(300, 150), ImGuiCond_FirstUseEver);
@@ -66,8 +65,11 @@ void ImguiMenu::Update() {
 		}
 		ImGui::SameLine(); HelpMarker("CTRL+click to input value.");
 
-		ImGui::SliderInt("Delay", &m_visualizer->delay, 1, 1090);
+		ImGui::SliderInt("Delay", &m_visualizer->delay, 1, 50000);
 		ImGui::SameLine(); HelpMarker("CTRL+click to input value.\nHigher the value the slower it is");
+
+
+		ImGui::SliderFloat("Volume", &m_visualizer->beeper.volume, 0.0, 1.0f);
 
 		ImGui::Combo("Algorithm", &m_visualizer->selected, m_visualizer->algos, IM_ARRAYSIZE(m_visualizer->algos));
 
